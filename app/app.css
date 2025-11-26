@@ -52,10 +52,10 @@ form {
 
 @layer components {
   .text-gradient {
-    @apply bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5] bg-clip-text text-transparent;
+    @apply bg-linear-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5] bg-clip-text text-transparent;
   }
   .gradient-border {
-    @apply from-light-blue-100 to-light-blue-200 rounded-2xl bg-gradient-to-b p-4;
+    @apply from-light-blue-100 to-light-blue-200 rounded-2xl bg-linear-to-b p-4;
   }
   .primary-button {
     @apply primary-gradient w-full cursor-pointer rounded-full px-4 py-2 text-white;
@@ -110,7 +110,7 @@ form {
   }
 
   .uplader-drag-area {
-    @apply relative min-h-[208px] cursor-pointer rounded-2xl bg-white p-8 text-center transition-all duration-700;
+    @apply relative min-h-52 cursor-pointer rounded-2xl bg-white p-8 text-center transition-all duration-700;
   }
   .uploader-selected-file {
     @apply flex items-center justify-between rounded-2xl bg-gray-50 p-3;
@@ -122,11 +122,11 @@ form {
 }
 
 @utility text-gradient {
-  @apply bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5] bg-clip-text text-transparent;
+  @apply bg-linear-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5] bg-clip-text text-transparent;
 }
 
 @utility gradient-hover {
-  @apply from-light-blue-100 to-light-blue-200 bg-gradient-to-b;
+  @apply from-light-blue-100 to-light-blue-200 bg-linear-to-b;
 }
 
 @utility primary-gradient {
