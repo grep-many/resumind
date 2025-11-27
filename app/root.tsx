@@ -26,15 +26,14 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { init } = usePuterStore();
 
-  const { init } = usePuterStore()
-  
   React.useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://js.puter.com/v2/";
     script.onload = () => init();
     document.body.appendChild(script);
-  }, []);  
+  }, []);
 
   return (
     <html lang="en">
