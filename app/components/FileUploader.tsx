@@ -1,6 +1,6 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
-import { formatSize } from "../lib/utils";
+import { formatSize } from "@/lib";
 
 interface Props {
   onFileSelect?: (file: File | null) => void;

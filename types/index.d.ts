@@ -49,3 +49,10 @@ interface Feedback {
     }[];
   };
 }
+
+interface AnalyzeParams {
+  companyName: string;
+  jobTitle: string;
+  jobDescription: string;
+  file: File;
+}
