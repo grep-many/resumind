@@ -51,13 +51,13 @@ const Resume = () => {
 
   return (
     <main className="pt-0!">
-      <nav className="resume-nav top-0 sticky z-1000 backdrop-blur-2xl bg-white/30">
+      <nav className="resume-nav sticky top-0 z-1000 bg-white/30 backdrop-blur-2xl">
         <Link to="/" className="back-button">
           <img src="/resumind/icons/back.svg" alt="logo" className="size-2.5" />
           <span className="text-sm font-semibold text-gray-800">Back to Homepage</span>
         </Link>
       </nav>
-      <div className="flex w-full flex-row max-lg:flex-col-reverse mt-2">
+      <div className="mt-2 flex w-full flex-row max-lg:flex-col-reverse">
         <section className="feedback-section bg-[url('/resumind/images/bg-small.svg') sticky top-0 h-screen items-center justify-center overflow-hidden bg-cover">
           {imageUrl && resumeUrl && (
             <div className="motion-safe:animate-in motion-safe:fade-in gradient-border h-[90%] w-fit motion-safe:duration-1000 max-2xl:h-fit max-sm:m-0">
