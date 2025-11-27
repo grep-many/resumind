@@ -33,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     script.src = "https://js.puter.com/v2/";
     script.onload = () => init();
     document.body.appendChild(script);
-  }, []);
+  }, [init]);
 
   return (
     <html lang="en">

@@ -30,7 +30,7 @@ const FileUploader = ({ onFileSelect, file }: Props) => {
       <div className="cursor-pointer space-y-4">
         {file ? (
           <div className="uploader-selected-file" onClick={(e) => e.stopPropagation()}>
-            <img src="images/pdf.png" alt="pdf" className="size-10" />
+            <img src="/resumind/images/pdf.png" alt="pdf" className="size-10" />
             <div className="flex items-center space-x-3">
               <div>
                 <p className="max-w-xs truncate text-sm font-medium text-gray-700">{file.name}</p>
@@ -43,13 +43,13 @@ const FileUploader = ({ onFileSelect, file }: Props) => {
                 onFileSelect?.(null);
               }}
             >
-              <img src="icons/cross.svg" alt="remove" className="size-4" />
+              <img src="/resumind/icons/cross.svg" alt="remove" className="size-4" />
             </button>
           </div>
         ) : (
           <>
             <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center">
-              <img src="icons/info.svg" alt="upload here" className="size-20" />
+              <img src="/resumind/icons/info.svg" alt="upload here" className="size-20" />
             </div>
             <p className="text-lg text-gray-500">
               <span className="font-semibold">Click to upload</span> or drag and drop

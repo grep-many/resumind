@@ -5,6 +5,15 @@ import { useNavigate } from "react-router";
 import { convertPdfToImage, usePuterStore, generateUUID } from "@/lib";
 import { prepareInstructions } from "~/constants";
 
+export const meta = () => [
+  { title: "Upload Resume | Resumind" },
+  {
+    name: "description",
+    content:
+      "Upload your resume to get AI-powered ATS analysis, score, and personalized improvement suggestions.",
+  },
+];
+
 const Upload = () => {
   const { auth, isLoading, fs, ai, kv } = usePuterStore();
   const navigate = useNavigate();
@@ -61,7 +70,7 @@ const Upload = () => {
     data.feedback = JSON.parse(feedbackText);
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
     setStatusText("Analysis complete,redirecting...");
-    console.log(data);
+    navigate(`/resume/${uuid}`);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -88,7 +97,7 @@ const Upload = () => {
           {isProcessing ? (
             <>
               <h2>{statusText}</h2>
-              <img src="images/resume-scan.gif" alt="scanning..." className="w-full" />
+              <img src="/resumind/images/resume-scan.gif" alt="scanning..." className="w-full" />
             </>
           ) : (
             <>Drop your resume for an ATS score and improvement tips</>
@@ -119,7 +128,7 @@ const Upload = () => {
                 />
               </div>
               <div className="form-div">
-                <label htmlFor="uploader">Job Description</label>
+                <label htmlFor="uploader">Upload Resume</label>
                 <FileUploader onFileSelect={handleFileSelect} file={file} />
               </div>
               <button className="primary-button" type="submit">
