@@ -1,0 +1,53 @@
+name: resumind-workflow
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: resumind-workflow
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: create build files
+        run: npm run build
+
+      - name: setup fallback 404
+        run: cp build/client/index.html build/client/404.html
+
+      - name: upload artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build/client
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
+    steps:
+      - name: deploying to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
