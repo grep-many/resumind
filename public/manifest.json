@@ -1,6 +1,7 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "ResuMind — AI-Powered Resume Analyzer",
+  "short_name": "ResuMind",
+  "description": "An AI-powered resume analyzer that extracts text, evaluates ATS score, detects formatting issues, and gives improvement suggestions.",
   "icons": [
     {
       "src": "/resumind/android-chrome-192x192.png",
