@@ -29,6 +29,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { init } = usePuterStore();
 
   React.useEffect(() => {
+    if (document.querySelector('script[src="https://js.puter.com/v2/"]')) return;
     const script = document.createElement("script");
     script.src = "https://js.puter.com/v2/";
     script.onload = () => init();

@@ -15,8 +15,15 @@ export const meta = () => [
 ];
 
 const Upload = () => {
-  const { auth, isLoading, fs, ai, kv } = usePuterStore();
+  const { auth, fs, ai, kv } = usePuterStore();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!auth.isAuthenticated) {
+      navigate("/auth?next=/upload");
+    }
+  }, [auth.isAuthenticated]);
+
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [statusText, setStatusText] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);
@@ -27,50 +34,66 @@ const Upload = () => {
 
   const handleAnalyze = async ({ companyName, jobTitle, jobDescription, file }: AnalyzeParams) => {
     setIsProcessing(true);
-    setStatusText("Uploading the file...");
-    const uploadedFile = await fs.upload([file]);
+    let uploadedFilePath: string | null = null;
+    let uploadedImagePath: string | null = null;
+    try {
+      setStatusText("Uploading the file...");
+      const uploadedFile = await fs.upload([file]);
 
-    if (!uploadedFile) return setStatusText("Error: Failed to upload file!");
+      if (!uploadedFile) return setStatusText("Error: Failed to upload file!");
+      uploadedFilePath = uploadedFile.path;
 
-    setStatusText("Converting to image");
+      setStatusText("Converting to image");
+      const imageFile = await convertPdfToImage(file);
+      if (!imageFile.file) return setStatusText("Error: Failed to convert PDF to image!");
 
-    const imageFile = await convertPdfToImage(file);
-    if (!imageFile.file) return setStatusText("Error: Failed to convert PDF to image!");
-    setStatusText("Uploading the image...");
-    const uploadedImage = await fs.upload([imageFile.file]);
-    if (!uploadedImage) return setStatusText("Error: Failed to upload image!");
-    setStatusText("Preparing data...");
-    const uuid = generateUUID();
+      setStatusText("Uploading the image...");
+      const uploadedImage = await fs.upload([imageFile.file]);
+      if (!uploadedImage) return setStatusText("Error: Failed to upload image!");
+      uploadedImagePath = uploadedImage.path;
 
-    const data = {
-      id: uuid,
-      resumePath: uploadedFile.path,
-      imagePath: uploadedImage.path,
-      companyName,
-      jobTitle,
-      jobDescription,
-      feedback: "",
-    };
+      setStatusText("Preparing data...");
+      const uuid = generateUUID();
 
-    await kv.set(`resume:${uuid}`, JSON.stringify(data));
-    setStatusText("Analyzing...");
+      const data = {
+        id: uuid,
+        resumePath: uploadedFile.path,
+        imagePath: uploadedImage.path,
+        companyName,
+        jobTitle,
+        jobDescription,
+        feedback: "",
+      };
 
-    const feedback = await ai.feedback(
-      uploadedFile.path,
-      prepareInstructions({ jobTitle, jobDescription }),
-    );
+      setStatusText("Analyzing...");
 
-    if (!feedback) return setStatusText("Error: Failed to analyze resume");
+      const feedback = await ai.feedback(
+        uploadedFile.path,
+        prepareInstructions({ jobTitle, jobDescription }),
+      );
 
-    const feedbackText =
-      typeof feedback.message.content === "string"
-        ? feedback.message.content
-        : feedback.message.content[0].text;
+      if (!feedback) return setStatusText("Error: Failed to analyze resume");
 
-    data.feedback = JSON.parse(feedbackText);
-    await kv.set(`resume:${uuid}`, JSON.stringify(data));
-    setStatusText("Analysis complete,redirecting...");
-    navigate(`/resume/${uuid}`);
+      const feedbackText =
+        typeof feedback.message.content === "string"
+          ? feedback.message.content
+          : feedback.message.content[0].text;
+
+      data.feedback = JSON.parse(feedbackText);
+      await kv.set(`resume:${uuid}`, JSON.stringify(data));
+      setStatusText("Analysis complete,redirecting...");
+      navigate(`/resume/${uuid}`);
+    } catch {
+      setStatusText("Error occurred. Cleaning up...");
+      if (uploadedFilePath) await fs.delete(uploadedFilePath);
+      if (uploadedImagePath) await fs.delete(uploadedImagePath);
+      setStatusText("Something went wrong while analyzing your resume!");
+      setTimeout(() => {
+        setStatusText("");
+      }, 2000);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,7 +106,7 @@ const Upload = () => {
     const jobTitle = formData.get("job-title") as string;
     const jobDescription = formData.get("job-description") as string;
 
-    if (!file) return;
+    if (!companyName || !jobTitle || !jobDescription || !file) return;
 
     handleAnalyze({ companyName, jobTitle, jobDescription, file });
   };
@@ -99,8 +122,10 @@ const Upload = () => {
               <h2>{statusText}</h2>
               <img src="/resumind/images/resume-scan.gif" alt="scanning..." className="w-full" />
             </>
+          ) : !!statusText ? (
+            <p className="font-medium text-red-600">{statusText}</p>
           ) : (
-            <>Drop your resume for an ATS score and improvement tips</>
+            <>"Drop your resume for an ATS score and improvement tips"</>
           )}
           {!isProcessing && (
             <form id="upload-form" onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">

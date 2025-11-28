@@ -12,15 +12,15 @@ export const meta = () => [
 
 const Resume = () => {
   const { id } = useParams();
-  const { auth, isLoading, fs, kv } = usePuterStore();
+  const { auth, fs, kv } = usePuterStore();
   const [imageUrl, setImageUrl] = React.useState("");
   const [resumeUrl, setResumeUrl] = React.useState("");
   const [feedback, setFeedback] = React.useState<Feedback | null>(null);
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!isLoading && !auth.isAuthenticated) navigate(`/auth?next=/resume/${id}`);
-  }, [isLoading]);
+    if (!auth.isAuthenticated) navigate("/auth?next=/");
+  }, [auth.isAuthenticated]);
 
   React.useEffect(() => {
     const loadResume = async () => {
@@ -43,7 +43,6 @@ const Resume = () => {
       setImageUrl(imageUrl);
 
       setFeedback(data.feedback);
-      console.log({ resumeUrl, imageUrl, feedback: data.feedback });
     };
 
     loadResume();

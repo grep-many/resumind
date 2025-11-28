@@ -1,27 +1,39 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
 import { usePuterStore } from "@/lib";
 import Navbar from "~/app/components/Navbar";
 
+export const meta = () => {
+  return [
+    { title: "Resumind | Wipe" },
+    { name: "description", content: "clean slate with one click!" },
+  ];
+};
+
 const WipeApp = () => {
-  const { auth, isLoading, error, fs, kv } = usePuterStore();
+  const { auth, isLoading, fs, kv } = usePuterStore();
   const navigate = useNavigate();
-  const [files, setFiles] = useState<FSItem[]>([]);
-  const [loadingFiles, setLoadingFiles] = useState(false);
-  const [wiping, setWiping] = useState(false);
+  const [files, setFiles] = React.useState<FSItem[]>([]);
+  const [loadingFiles, setLoadingFiles] = React.useState(false);
+  const [wiping, setWiping] = React.useState(false);
 
   const loadFiles = async () => {
     setLoadingFiles(true);
-    const files = (await fs.readDir("./")) as FSItem[];
-    setFiles(files);
-    setLoadingFiles(false);
+    try {
+      const files = (await fs.readDir("./")) as FSItem[];
+      setFiles(files);
+    } catch {
+      setFiles([]);
+    } finally {
+      setLoadingFiles(false);
+    }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     loadFiles();
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isLoading && !auth.isAuthenticated) {
       navigate("/auth?next=/wipe");
     }
@@ -44,7 +56,6 @@ const WipeApp = () => {
   return (
     <main className='min-h-screen bg-[url("/resumind/images/bg-main.svg")] bg-cover'>
       <Navbar />
-
       <section className="main-section py-16">
         <div className="page-heading">
           <h1>Wipe App Data</h1>
@@ -64,11 +75,11 @@ const WipeApp = () => {
 
           {loadingFiles && <img src="/resumind/images/resume-scan-2.gif" className="w-[150px]" />}
 
-          {!loadingFiles && files.length === 0 && (
+          {!loadingFiles && files?.length === 0 && (
             <p className="text-lg opacity-70">No files found.</p>
           )}
 
-          {!loadingFiles && files.length > 0 && (
+          {!loadingFiles && files?.length > 0 && (
             <div className="flex w-full max-w-xl flex-col gap-3">
               {files.map((file) => (
                 <div
