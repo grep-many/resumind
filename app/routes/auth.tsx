@@ -1,4 +1,3 @@
-"use client";
 import { usePuterStore } from "@/lib";
 import React from "react";
 import { useLocation, useNavigate } from "react-router";

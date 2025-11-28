@@ -1,87 +1,146 @@
-# Welcome to React Router!
+# ResuMind --- AI‑Powered Resume Analyzer
 
-A modern, production-ready template for building full-stack React applications using React Router.
+![Build](https://img.shields.io/github/actions/workflow/status/grep-many/resumind/deploy.yml?label=Build)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Status](https://img.shields.io/badge/React%20Router-7.9-blue)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1-38BDF8)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+> A modern, server‑rendered **AI Resume Analyzer** built with **React
+> Router v7 Full‑Stack**, **TypeScript**, and **TailwindCSS** ---
+> supporting PDF parsing, ATS scoring, resume insights, and PWA
+> features.
 
-## Features
+------------------------------------------------------------------------
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## 🚀 Overview
 
-## Getting Started
+**ResuMind** is a full‑stack React Router (v7) application that helps
+users upload resumes (PDF), converts them into images, extracts text,
+and generates AI‑powered insights & ATS score.
 
-### Installation
+This project focuses on:
 
-Install the dependencies:
+-   Full‑stack React Router architecture (loaders/actions/server routes)
+-   PDF → Image processing using `pdfjs-dist`
+-   ATS scoring & structured evaluation
+-   Clean, modern UI with TailwindCSS
+-   Global state using Zustand
+-   Drag‑and‑drop resume upload
+-   PWA support (manifest + icons)
+-   Optimized static assets
 
-```bash
-npm install
+------------------------------------------------------------------------
+
+## 🖥️ Project Screenshot
+
+> Desktop Preview\
+> *(Replace this with your screenshot later)*
+
+![preview](./screenshots/preview.png)
+
+------------------------------------------------------------------------
+
+## 📁 Folder Structure
+
+``` bash
+.
+├── app
+│   ├── app.css
+│   ├── components
+│   │   ├── Accordian.tsx
+│   │   ├── ATS.tsx
+│   │   ├── Details.tsx
+│   │   ├── FileUploader.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── ResumeCard.tsx
+│   │   ├── ScoreBadge.tsx
+│   │   ├── ScoreCircle.tsx
+│   │   ├── ScoreGauge.tsx
+│   │   └── Summary.tsx
+│   ├── lib
+│   │   ├── index.ts
+│   │   ├── pdf2img.ts
+│   │   ├── puter.ts
+│   │   └── utils.ts
+│   ├── root.tsx
+│   ├── routes
+│   │   ├── auth.tsx
+│   │   ├── home.tsx
+│   │   ├── resume.tsx
+│   │   ├── upload.tsx
+│   │   └── wipe.tsx
+│   └── routes.ts
+├── constants
+│   ├── AIResponseFormat.ts
+│   ├── index.ts
+│   └── prepareInstructions.ts
+├── Dockerfile
+├── package.json
+├── public
+│   ├── icons
+│   ├── images
+│   ├── manifest.json
+│   └── pdf.worker.min.mjs
+├── react-router.config.ts
+├── tsconfig.json
+├── types
+├── vite.config.ts
+└── README.md
 ```
 
-### Development
+------------------------------------------------------------------------
 
-Start the development server with HMR:
+## 🛠️ Tech Stack
 
-```bash
+### **Frontend / Fullstack**
+
+-   React 19
+-   React Router v7 Full‑Stack
+-   TypeScript
+-   Zustand
+-   TailwindCSS 4
+-   Vite 7
+
+### **PDF & Utility**
+
+-   pdfjs‑dist (PDF → Image extract)
+-   clsx
+-   tailwind‑merge
+
+### **Deployment**
+
+-   Docker
+-   GitHub Actions
+
+------------------------------------------------------------------------
+
+## ⚙️ Scripts
+
+``` json
+{
+  "build": "react-router build",
+  "dev": "react-router dev",
+  "start": "react-router-serve ./build/server/index.js",
+  "typecheck": "react-router typegen && tsc"
+}
+```
+
+------------------------------------------------------------------------
+
+## 📦 Installation & Setup
+
+``` bash
+git clone https://github.com/grep-many/resumind.git
+cd resumind
+npm install
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+------------------------------------------------------------------------
 
-## Building for Production
+## 🪪 License
 
-Create a production build:
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+This project is open-sourced under the MIT License © 2025 Manish.
